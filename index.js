@@ -42,7 +42,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Talukder tour and Travel Server')
+    res.send('Talukder tour and Travel Server running')
 })
 
 app.listen(port, () => {
