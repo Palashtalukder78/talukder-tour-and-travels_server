@@ -18,6 +18,7 @@ async function run() {
         await client.connect();
         const database = client.db("talukder-tour-travel");
         const packageCollection = database.collection("packages");
+        const registeredTouristCollection = database.collection("registeredTourist");
         console.log("Database connected");
 
         //add package / insert data from add-package page
@@ -27,12 +28,25 @@ async function run() {
             const result = await packageCollection.insertOne(newPackage);
             res.json(result);
         })
+        //Adding newRegistered Tourist for a package
+        app.post('/registered-tourist', async (req, res) => {
+            const registeredTourist = req.body;
+            const result = await registeredTouristCollection.insertOne(registeredTourist)
+            res.json(result);
+        })
 
         //Get data from Database and render in Web app
         app.get('/packages', async (req, res) => {
             const allPackage = packageCollection.find({})
             const result = await allPackage.toArray()
             res.send(result);
+        })
+        //Get data from database finding by id
+        app.get('/packages/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await packageCollection.findOne(query);
+            res.send(result)
         })
 
     } finally {
