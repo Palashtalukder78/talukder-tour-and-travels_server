@@ -47,7 +47,20 @@ async function run() {
             const result = await registeredTouristCollection.deleteOne(query)
             res.send(result)
         })
-
+        //Update/active registered Tourist from the client site
+        app.put('/registered-tourist/:id', async (req, res) => {
+            const id = req.params.id;
+            const registeredUser = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const makeActiveTourist = {
+                $set: {
+                    status: 'Active'
+                },
+            };
+            const result = await registeredTouristCollection.updateOne(filter, makeActiveTourist, options)
+            res.json(result)
+        })
         //Get data from Database and render in Web app
         app.get('/packages', async (req, res) => {
             const allPackage = packageCollection.find({})
