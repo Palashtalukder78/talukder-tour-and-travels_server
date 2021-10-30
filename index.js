@@ -34,6 +34,19 @@ async function run() {
             const result = await registeredTouristCollection.insertOne(registeredTourist)
             res.json(result);
         })
+        //Get data Registered Tourist from Database
+        app.get('/registered-tourist', async (req, res) => {
+            const allRegisteredTourist = registeredTouristCollection.find({});
+            const result = await allRegisteredTourist.toArray();
+            res.send(result);
+        })
+        //delete registered Tourist from database
+        app.delete('/registered-tourist/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await registeredTouristCollection.deleteOne(query)
+            res.send(result)
+        })
 
         //Get data from Database and render in Web app
         app.get('/packages', async (req, res) => {
