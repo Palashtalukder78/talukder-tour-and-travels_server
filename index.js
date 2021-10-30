@@ -19,6 +19,7 @@ async function run() {
         const database = client.db("talukder-tour-travel");
         const packageCollection = database.collection("packages");
         const registeredTouristCollection = database.collection("registeredTourist");
+        const organizerCollection = database.collection("organizer");
         console.log("Database connected");
 
         //add package / insert data from add-package page
@@ -73,6 +74,12 @@ async function run() {
             const query = { _id: ObjectId(id) }
             const result = await packageCollection.findOne(query);
             res.send(result)
+        })
+        //Get Organizer from Database
+        app.get('/organizer', async (req, res) => {
+            const allOrganizer = organizerCollection.find({})
+            const result = await allOrganizer.toArray()
+            res.send(result);
         })
 
     } finally {
